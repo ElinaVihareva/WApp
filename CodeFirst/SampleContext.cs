@@ -12,7 +12,7 @@ namespace CodeFirst
     public class SampleContext : DbContext
     {
         public SampleContext()
-            :base("Data Source=n0039;Initial Catalog=HW;User ID=sa;Password=123qwe;")
+            :base("Data Source=n0039;Initial Catalog=HW2;User ID=sa;Password=123qwe;")
         {
             
         }
