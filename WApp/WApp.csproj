@@ -214,6 +214,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\DiagramsModels.cs" />
     <Compile Include="Models\ELMAConnecting.cs" />
+    <Compile Include="Models\ELMADBContext.cs" />
     <Compile Include="Models\ELMADBModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
