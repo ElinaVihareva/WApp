@@ -1,6 +1,88 @@
-﻿@Model DiagramsModels;
+﻿
 
-<h2>Аналитика.</h2>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 
 
-@Html.DropDownListFor(x => x.nameProcess, Model.nameProcess);
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+
+
+<h2>@ViewBag.Title.</h2>
+<div id="container" style="height: 400px"></div>
+<script type="text/javascript">
+    $(function () {
+
+        var rawData = [
+    { name: 'A', x: 5.2, y: 5.6 },
+    { name: 'B', x: 3.9, y: 10.1 },
+    { name: 'C', x: 11.5, y: 1.2 },
+    { name: 'D', x: 2.4, y: 17.8 },
+    { name: 'E', x: 8.1, y: 8.4 }
+        ];
+
+        function makeSeries(listOfData) {
+            var sumX = 0.0;
+            for (var i = 0; i < listOfData.length; i++) {
+                sumX += listOfData[i].x;
+            }
+            var gap = sumX / rawData.length * 0.0;
+            var allSeries = []
+            var x = 0.0;
+            for (var i = 0; i < listOfData.length; i++) {
+                var data = listOfData[i];
+                allSeries[i] = {
+                    name: data.name,
+                    data: [
+                        [x, 0], [x, data.y],
+                        {
+                            x: x + data.x / 2.0,
+                            y: data.y,
+                            dataLabels: { enabled: true, format: data.x + ' x {y}' }
+                        },
+                        [x + data.x, data.y], [x + data.x, 0]
+                    ],
+                    w: data.x,
+                    h: data.y
+                };
+                x += data.x + gap;
+            }
+            return allSeries;
+        }
+
+
+        Highcharts.chart('container', {
+            chart: { type: 'area' },
+            xAxis: {
+                tickLength: 0,
+                labels: { enabled: false}
+            },
+            yAxis: {
+                title: { enabled: false}
+            },
+            plotOptions: {
+                area: {
+                    marker: {
+                        enabled: false,
+                        states: {
+                            hover: { enabled: false }
+                        }
+                    }
+                }
+            },
+            tooltip: {
+                followPointer: true,
+                useHTML: true,
+                headerFormat: '<span style="color: {series.color}">{series.name}</span>: ',
+                pointFormat: '<span>{series.options.w} x {series.options.h}</span>'
+            },
+            series: makeSeries(rawData)
+        });
+    });
+</script>
+
+@{
+    ViewBag.Title = "Аналитика";
+}
+
+
