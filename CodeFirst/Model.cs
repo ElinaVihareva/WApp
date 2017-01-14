@@ -1,70 +1,80 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CodeFirst
 {
-    class Model
+    public class Model
     {
         public class WorkflowInstance
         {
-            long id;
-            Guid uid;
-            long process;
-            string name;
-            DateTime startDate;
-            DateTime endDate;
-            long status;
-            Guid elementUid;
-            long elmaId;
-        }
+          
+            public int Id { get; set; }
+            public Guid uid { get; set; }
+            public long process { get; set; }
+            public string name { get; set; }
+            public DateTime startDate { get; set; }
+            public DateTime endDate { get; set; }
+            public long status { get; set; }
+            public Guid elementUid { get; set; }
+            public long elmaId { get; set; }
 
-        public class WorkflowBookmark
-        {
-            long id;
-            Guid uid;
-            Guid elementUid;
-            long instance;
-            long elmaId;
-        }
 
-        public class TaskBase
-        {
-            long id;
-            long executor;
-            string subject;
-            DateTime startDate;
-            DateTime endWorkDate;
-            long workflowBookmark;
-            long elmaId;
-        }
+            public class WorkflowBookmark
+            {
 
-        public class WorkflowTrackingItem
-        {
-            long id;
-            Guid elementUid;
-            DateTime startDate;
-            DateTime endDate;
-            long elmaId;
-        }
+                public  int Id { get; set; }
+                public Guid uid { get; set; }
+                public Guid elementUid { get; set; }
+                public long instance { get; set; }
+                public long elmaId { get; set; }
+            }
 
-        public class WorkflowProcess
-        {
-            long id;
-            string name;
-            long header;
-            long versionNumber;
-            long elmaId;
-        }
+            public class TaskBase
+            {
 
-        public class ELMAConnetion
-        {
-            string address;
-            string login;
-            string password;
-            long id;
+                public  int Id { get; set; }
+                public long executor { get; set; }
+                public string subject { get; set; }
+                public DateTime startDate { get; set; }
+                public DateTime endWorkDate { get; set; }
+                public long workflowBookmark { get; set; }
+                public long elmaId { get; set; }
+            }
+
+            public class WorkflowTrackingItem
+            {
+          
+                public int Id { get; set; }
+                Guid elementUid { get; set; }
+                DateTime startDate { get; set; }
+                DateTime endDate { get; set; }
+                long elmaId { get; set; }
+            }
+
+            public class WorkflowProcess
+            {
+              
+                public int Id { get; set; }
+                string name { get; set; }
+                long header { get; set; }
+                long versionNumber { get; set; }
+                long elmaId { get; set; }
+            }
+
+            public class ELMAConnetion
+            {
+                string address { get; set; }
+                string login { get; set; }
+                string password { get; set; }
+              
+                public int Id { get; set; }
+            }
+
+
         }
     }
 }
