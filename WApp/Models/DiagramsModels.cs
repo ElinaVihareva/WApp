@@ -13,10 +13,7 @@ namespace WApp.Models
     {
         public List<ProcessHeader> process { get; set; }
         public List<string> namPprocess { get; set; }
-    }
 
-    public class ArticleEditViewModel
-    {
         private List<SelectListItem> _process = new List<SelectListItem>();
 
         [Required(ErrorMessage = "Пожалуйста выберете процесс")]
