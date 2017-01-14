@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using WApp.Models;
+using CodeFirst;
+using static CodeFirst.Model;
 
 namespace WApp.Controllers
 {
@@ -81,11 +83,19 @@ namespace WApp.Controllers
                 case SignInStatus.Success:
                     if (model.Email == "admin@mail.com")
                     {
-                        return View("Settings", model);
+                        return View("Settings");
                     }
                     else
                     {
-                        return View("Diagrams", model);
+                        SampleContext context = new SampleContext();
+                        var newmodel = new DiagramsModels();
+
+                        foreach (ProcessHeader header in context.ProcessHeader)
+                        {
+                            newmodel.process.Add(header);
+                            newmodel.namPprocess.Add(header.Name);
+                        }
+                        return View("Diagrams", newmodel);
                     }
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -488,5 +498,10 @@ namespace WApp.Controllers
             }
         }
         #endregion
+        
+
     }
+
+
+
 }

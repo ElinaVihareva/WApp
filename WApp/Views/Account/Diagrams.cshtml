@@ -1,7 +1,6 @@
-﻿@using WApp.Models
-@model DiagramsModels;
+﻿@Model DiagramsModels;
 
 <h2>Аналитика.</h2>
 
 
-
+@Html.DropDownListFor(x => x.nameProcess, Model.nameProcess);
