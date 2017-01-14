@@ -17,6 +17,10 @@ using System.Threading.Tasks;
 using AutoServer.Common;
 using System.Runtime.Serialization.Json;
 
+using WApp.Models;
+using CodeFirst;
+using System.Data.Entity;
+
 namespace WApp.Managers
 {
     /// <summary>
@@ -46,8 +50,10 @@ namespace WApp.Managers
         /// </summary>
         public void Sync() {
             ConnectElma();
-            syncTask();
-
+            Database.SetInitializer(
+       new DropCreateDatabaseIfModelChanges<SampleContext>());
+            AddNewCustomer();
+         //   syncTask();
 
         }
 
@@ -141,12 +147,7 @@ namespace WApp.Managers
             var sr = new StreamReader(resStream, Encoding.UTF8);
 
             var s = sr.ReadToEnd();
-            //достаем необходимые данные
-            //Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(s);
-            //DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(object[]));
-            //object objResponse = jsonSerializer.ReadObject(resStream);
-
-            // var dict = new JsonSerializer().Deserialize(sr.ReadToEnd(), typeof(Dictionary<string, string>)) as Dictionary<string, string>;
+            
             var dict = new JsonSerializer();
             //var s = "";
             var dictA = dict.DeserializeObject(s);// as Dictionary<string, string>;
@@ -156,19 +157,81 @@ namespace WApp.Managers
                     var value = dictC as Dictionary<string, object>;
                     var items = value["Items"];
                     var params1=items as object[];
+                    // Создать объект контекста
+                    CodeFirst.Model.WorkflowInstance instance = new CodeFirst.Model.WorkflowInstance();
+                    instance.endDate = DateTime.Now;
+                    instance.startDate = DateTime.Now;
                     foreach (var param in params1)
                     {
                         var p1 = param as Dictionary<string, object>;
                         if (p1.ContainsKey("Name")) {
-                            var Id =long.Parse((string) p1["Value"]); 
+                            var name = p1["Name"];
+                            if (name.Equals( "Id")) {
+                                instance.Id = int.Parse((string)p1["Value"]);
+                            }
+                        }
+                        if (p1.ContainsKey("Name"))
+                        {
+                            var name = p1["Name"];
+                            if (name.Equals("Uid"))
+                            {
+                                instance.uid =new Guid((string)p1["Value"]);
+                            }
+                        }
+                        if (p1.ContainsKey("Name"))
+                        {
+                            var name = p1["Name"];
+                            if (name.Equals("Uid"))
+                            {
+                                instance.process = int.Parse((string)p1["Value"]);
+                            }
                         }
 
-                        
+                        /*
+                      
+           
+            public string name { get; set; }
+            public DateTime startDate { get; set; }
+            public DateTime endDate { get; set; }
+            public long status { get; set; }
+            public Guid elementUid { get; set; }
+            public long elmaId { get; set; }    
+                     */
+
+
                     }
-                        
+                    // Создать объект контекста
+                    CodeFirst.SampleContext context = new CodeFirst.SampleContext();
+                    // Вставить данные в таблицу Customers с помощью LINQ
+                    
+                    context.WorkflowInstance.Add(instance);
+
+                    // Сохранить изменения в БД
+                    context.SaveChanges();
+
                 }
             }
             Console.ReadKey();
+        }
+        public  void AddNewCustomer()
+        {
+           // SampleContext context = new SampleContext();
+
+            // Создать нового покупателя
+            CodeFirst.Model.WorkflowInstance instance = new CodeFirst.Model.WorkflowInstance();
+            instance.Id = 1;
+            instance.name = "ss";
+            instance.endDate =  DateTime.Now;
+            instance.startDate = DateTime.Now;
+            // Создать объект контекста
+            CodeFirst.SampleContext context = new CodeFirst.SampleContext();
+            // Вставить данные в таблицу Customers с помощью LINQ
+
+            context.WorkflowInstance.Add(instance);
+
+            // Сохранить изменения в БД
+            context.SaveChanges();
+            
         }
 
     }
