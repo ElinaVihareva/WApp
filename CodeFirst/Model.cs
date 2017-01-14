@@ -70,8 +70,12 @@ namespace CodeFirst
                 string address { get; set; }
                 string login { get; set; }
                 string password { get; set; }
-              
                 public int Id { get; set; }
+            }
+            public class ProcessHeader
+            {
+                public int Id { get; set; }
+                public string Name { get; set; }
             }
 
 

@@ -23,5 +23,8 @@ namespace CodeFirst
             public DbSet<WorkflowProcess> WorkflowProcess { get; set; }
             public DbSet<WorkflowTrackingItem> WorkflowTrackingItem { get; set; }
             public DbSet<ELMAConnetion> ELMAConnetion { get; set; }
+            public DbSet<ProcessHeader> ProcessHeader { get; set; }
+       
+
     }
 }
