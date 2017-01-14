@@ -79,7 +79,14 @@ namespace WApp.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    if (model.Email == "admin@mail.com")
+                    {
+                        return View("Settings", model);
+                    }
+                    else
+                    {
+                        return View("Diagrams", model);
+                    }
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:

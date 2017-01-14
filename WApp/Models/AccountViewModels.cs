@@ -6,7 +6,8 @@ namespace WApp.Models
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
-        [Display(Name = "Адрес электронной почты")]
+        [EmailAddress]
+        [Display(Name = "Электронная почта")]
         public string Email { get; set; }
     }
 
@@ -42,15 +43,16 @@ namespace WApp.Models
     public class ForgotViewModel
     {
         [Required]
-        [Display(Name = "Адрес электронной почты")]
+        [EmailAddress]
+        [Display(Name = "Электронная почта")]
         public string Email { get; set; }
     }
 
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Адрес электронной почты")]
         [EmailAddress]
+        [Display(Name = "Электронная почта")]
         public string Email { get; set; }
 
         [Required]
@@ -66,7 +68,7 @@ namespace WApp.Models
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Адрес электронной почты")]
+        [Display(Name = "Электронная почта")]
         public string Email { get; set; }
 
         [Required]
@@ -84,8 +86,7 @@ namespace WApp.Models
     public class ResetPasswordViewModel
     {
         [Required]
-        [EmailAddress]
-        [Display(Name = "Адрес электронной почты")]
+        [Display(Name = "Электронная почта")]
         public string Email { get; set; }
 
         [Required]
@@ -105,7 +106,6 @@ namespace WApp.Models
     public class ForgotPasswordViewModel
     {
         [Required]
-        [EmailAddress]
         [Display(Name = "Почта")]
         public string Email { get; set; }
     }
