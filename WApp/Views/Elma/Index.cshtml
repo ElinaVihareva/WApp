@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "Настройка подключения к Elma";
+}
+
+<h2>ElmaConfig</h2>
+Синхронизировать данные с Elma <input type="button" value="Синхронизация" onclick="syncElma()">
+<script>
+
+    function syncElma() {
+        var data = "data";
+        console.log("s1");
+        var url = "../Elma/SyncElma"
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            type: "POST",
+            data: data,
+            success: callback
+        });
+        console.log("s2");
+
+    }
+    function callback(e,e1,e2) {
+        alert("ok")
+    }
+
+</script>
+
