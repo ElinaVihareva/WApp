@@ -49,27 +49,27 @@ namespace CodeFirst
         {
 
             public int Id { get; set; }
-            Guid elementUid { get; set; }
-            DateTime startDate { get; set; }
-            DateTime endDate { get; set; }
-            long elmaId { get; set; }
+            public Guid elementUid { get; set; }
+            public DateTime startDate { get; set; }
+            public DateTime endDate { get; set; }
+            public long elmaId { get; set; }
         }
 
         public class WorkflowProcess
         {
 
             public int Id { get; set; }
-            string name { get; set; }
-            long header { get; set; }
-            long versionNumber { get; set; }
-            long elmaId { get; set; }
+            public string name { get; set; }
+            public long header { get; set; }
+            public long versionNumber { get; set; }
+            public long elmaId { get; set; }
         }
 
         public class ELMAConnetion
         {
-            string address { get; set; }
-            string login { get; set; }
-            string password { get; set; }
+            public string address { get; set; }
+            public string login { get; set; }
+            public string password { get; set; }
             public int Id { get; set; }
         }
 

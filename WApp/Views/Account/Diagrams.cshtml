@@ -1,6 +1,4 @@
-﻿@model WApp.Models.DiagramsModels;
-
-@{
+﻿@{
     ViewBag.Title = "Аналитика";
 }
 
@@ -11,6 +9,7 @@
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
 
+<h2> <img src="~/Content/WorkflowCharts.png" alt="logo"> </h2>
 
 <h2>@ViewBag.Title.</h2>
 <div id="container" style="height: 400px"></div>
@@ -18,11 +17,16 @@
     $(function () {
 
         var rawData = [
-    { name: 'A', x: 5.2, y: 5.6 },
-    { name: 'B', x: 3.9, y: 10.1 },
-    { name: 'C', x: 11.5, y: 1.2 },
-    { name: 'D', x: 2.4, y: 17.8 },
-    { name: 'E', x: 8.1, y: 8.4 }
+    { name: 'Версия 35', x: 10, y: 20 },
+    { name: 'Версия 36', x: 13, y: 21 },
+    { name: 'Версия 37', x: 5, y: 15 },
+    { name: 'Версия 38', x: 9, y: 17.1 },
+    { name: 'Версия 39', x: 11, y: 17 },
+    { name: 'Версия 40', x: 3, y: 17.5 },
+    { name: 'Версия 41', x: 2, y: 17.3 },
+    { name: 'Версия 42', x: 8, y: 20 },
+    { name: 'Версия 43', x: 3, y: 19.8 },
+    { name: 'Версия 44', x: 12, y: 16.9 }
         ];
 
         function makeSeries(listOfData) {
@@ -42,14 +46,14 @@
                         {
                             x: x + data.x / 2.0,
                             y: data.y,
-                            dataLabels: { enabled: true, format: data.x + ' x {y}' }
+                            dataLabels: { enabled: false, format: data.y + ' часов,<br> {x} экземпляров' }
                         },
                         [x + data.x, data.y], [x + data.x, 0]
                     ],
                     w: data.x,
                     h: data.y
                 };
-                x += data.x + gap;
+                x += data.x + gap+3;
             }
             return allSeries;
         }
@@ -84,11 +88,221 @@
         });
     });
 </script>
+<div id="container1" style="height: 400px"></div>
+<script type="text/javascript">
+    $(function () {
 
-<text>Select a category: </text> 
-@Html.DropDownList("myDDL", Model.Process);
-@Html.DropDownListFor(x => x.SelectedProcess, 
-    new SelectList(Model.Process, "Value", "Text"), "Please Select a category")
+        var rawData = [
+    { name: 'Инициатор', x: 8, y: 8.2 },
+    { name: 'Руководитель', x: 5.6, y: 20.7 },
+    { name: 'Согласующий', x: 3.4, y: 10.2},
+    { name: 'Технолог', x: 2, y: 6.7 },
+    { name: 'Секретарь', x: 1, y: 3.6 }
+        ];
 
-@Html.ValidationMessageFor(x => x.SelectedProcess)
+        function makeSeries(listOfData) {
+            var sumX = 0.0;
+            for (var i = 0; i < listOfData.length; i++) {
+                sumX += listOfData[i].x;
+            }
+            var gap = sumX / rawData.length * 0.0;
+            var allSeries = []
+            var x = 0.0;
+            for (var i = 0; i < listOfData.length; i++) {
+                var data = listOfData[i];
+                allSeries[i] = {
+                    name: data.name,
+                    data: [
+                        [x, 0], [x, data.y],
+                        {
+                            x: x + data.x / 2.0,
+                            y: data.y,
+                            dataLabels: { enabled: false, format: data.y + ' часов,<br> {x} экземпляров' }
+                        },
+                        [x + data.x, data.y], [x + data.x, 0]
+                    ],
+                    w: data.x,
+                    h: data.y
+                };
+                x += data.x + gap+3;
+            }
+            return allSeries;
+        }
+
+
+        Highcharts.chart('container1', {
+            chart: { type: 'area' },
+            xAxis: {
+                tickLength: 0,
+                labels: { enabled: false}
+            },
+            yAxis: {
+                title: { enabled: false}
+            },
+            plotOptions: {
+                area: {
+                    marker: {
+                        enabled: false,
+                        states: {
+                            hover: { enabled: false }
+                        }
+                    }
+                }
+            },
+            tooltip: {
+                followPointer: true,
+                useHTML: true,
+                headerFormat: '<span style="color: {series.color}">{series.name}</span>: ',
+                pointFormat: '<span>{series.options.w} x {series.options.h}</span>'
+            },
+            series: makeSeries(rawData)
+        });
+    });
+</script>
+
+<div id="container2" style="height: 400px"></div>
+<script type="text/javascript">
+    $(function () {
+
+        var rawData = [
+    { name: 'Создание документа', x: 1, y: 2.6 },
+    { name: 'Отправка на согласование', x: 1, y: 0.1 },
+    { name: 'Доработка документа', x: 5, y: 15.4},
+    { name: 'Контроль получения оригинала', x: 1, y: 0.5 }
+        ];
+
+        function makeSeries(listOfData) {
+            var sumX = 0.0;
+            for (var i = 0; i < listOfData.length; i++) {
+                sumX += listOfData[i].x;
+            }
+            var gap = sumX / rawData.length * 0.0;
+            var allSeries = []
+            var x = 0.0;
+            for (var i = 0; i < listOfData.length; i++) {
+                var data = listOfData[i];
+                allSeries[i] = {
+                    name: data.name,
+                    data: [
+                        [x, 0], [x, data.y],
+                        {
+                            x: x + data.x / 2.0,
+                            y: data.y,
+                            dataLabels: { enabled: false, format: data.y + ' часов,<br> {x} экземпляров' }
+                        },
+                        [x + data.x, data.y], [x + data.x, 0]
+                    ],
+                    w: data.x,
+                    h: data.y
+                };
+                x += data.x + gap+3;
+            }
+            return allSeries;
+        }
+
+
+        Highcharts.chart('container2', {
+            chart: { type: 'area' },
+            xAxis: {
+                tickLength: 0,
+                labels: { enabled: false}
+            },
+            yAxis: {
+                title: { enabled: false}
+            },
+            plotOptions: {
+                area: {
+                    marker: {
+                        enabled: false,
+                        states: {
+                            hover: { enabled: false }
+                        }
+                    }
+                }
+            },
+            tooltip: {
+                followPointer: true,
+                useHTML: true,
+                headerFormat: '<span style="color: {series.color}">{series.name}</span>: ',
+                pointFormat: '<span>{series.options.w} x {series.options.h}</span>'
+            },
+            series: makeSeries(rawData)
+        });
+    });
+</script>
+
+<div id="container3" style="height: 400px"></div>
+<script type="text/javascript">
+    $(function () {
+
+        var rawData = [
+    { name: 'Сатирская Н.А.', x: 3, y: 3.5},
+    { name: 'Сайтерлы Р.Г.', x: 4, y: 2.8 },
+    { name: 'Миразутдинов М.О.', x: 5, y: 2.4},
+    { name: 'Эмануилов А.А.', x: 4, y: 2.9 },
+    { name: 'Искандеров И.А.', x: 6, y:3.1 }
+        ];
+
+        function makeSeries(listOfData) {
+            var sumX = 0.0;
+            for (var i = 0; i < listOfData.length; i++) {
+                sumX += listOfData[i].x;
+            }
+            var gap = sumX / rawData.length * 0.0;
+            var allSeries = []
+            var x = 0.0;
+            for (var i = 0; i < listOfData.length; i++) {
+                var data = listOfData[i];
+                allSeries[i] = {
+                    name: data.name,
+                    data: [
+                        [x, 0], [x, data.y],
+                        {
+                            x: x + data.x / 2.0,
+                            y: data.y,
+                            dataLabels: { enabled: false, format: data.y + ' часов,<br> {x} экземпляров' }
+                        },
+                        [x + data.x, data.y], [x + data.x, 0]
+                    ],
+                    w: data.x,
+                    h: data.y
+                };
+                x += data.x + gap+3;
+            }
+            return allSeries;
+        }
+
+
+        Highcharts.chart('container3', {
+            chart: { type: 'area' },
+            xAxis: {
+                tickLength: 0,
+                labels: { enabled: false}
+            },
+            yAxis: {
+                title: { enabled: false}
+            },
+            plotOptions: {
+                area: {
+                    marker: {
+                        enabled: false,
+                        states: {
+                            hover: { enabled: false }
+                        }
+                    }
+                }
+            },
+            tooltip: {
+                followPointer: true,
+                useHTML: true,
+                headerFormat: '<span style="color: {series.color}">{series.name}</span>: ',
+                pointFormat: '<span>{series.options.w} x {series.options.h}</span>'
+            },
+            series: makeSeries(rawData)
+        });
+    });
+</script>
+
+
+
 
