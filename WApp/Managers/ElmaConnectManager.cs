@@ -52,8 +52,8 @@ namespace WApp.Managers
             ConnectElma();
             Database.SetInitializer(
        new DropCreateDatabaseIfModelChanges<SampleContext>());
-         //   AddNewCustomer();
-            syncTask();
+            AddNewCustomer();
+         //   syncTask();
 
         }
 
