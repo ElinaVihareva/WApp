@@ -1,4 +1,6 @@
-﻿@{
+﻿@model WApp.Models.DiagramsModels;
+
+@{
     ViewBag.Title = "Аналитика";
 }
 
@@ -82,4 +84,11 @@
         });
     });
 </script>
+
+<text>Select a category: </text> 
+@Html.DropDownList("myDDL", Model.Process);
+@Html.DropDownListFor(x => x.SelectedProcess, 
+    new SelectList(Model.Process, "Value", "Text"), "Please Select a category")
+
+@Html.ValidationMessageFor(x => x.SelectedProcess)
 

@@ -89,11 +89,14 @@ namespace WApp.Controllers
                     {
                         SampleContext context = new SampleContext();
                         var newmodel = new DiagramsModels();
+                        
 
                         foreach (ProcessHeader header in context.ProcessHeader)
                         {
                             newmodel.process.Add(header);
                             newmodel.namPprocess.Add(header.Name);
+                            newmodel.SelectedProcess = header.Name;
+                            newmodel.Process.Add(new SelectListItem() { Text = header.Name, Value = header.Id.ToString() });
                         }
                         return View("Diagrams", newmodel);
                     }
