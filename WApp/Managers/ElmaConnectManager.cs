@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using AutoServer.Common;
+using System.Runtime.Serialization.Json;
 
 namespace WApp.Managers
 {
@@ -45,7 +46,9 @@ namespace WApp.Managers
         /// </summary>
         public void Sync() {
             ConnectElma();
-            
+            syncTask();
+
+
         }
 
         /// <summary>
@@ -110,10 +113,63 @@ namespace WApp.Managers
             var dict = new JsonSerializer();
             var dictA = dict.DeserializeObject(s);// as Dictionary<string, string>;
             var dictB = dictA  as Dictionary<string, object>;
-            var authToken = dictB["AuthToken"];
-            var sessionToken = dictB["SessionToken"];
+             authToken =(string) dictB["AuthToken"];
+             SessionToken = (string)dictB["SessionToken"];
         }
 
+        private void syncTask() {
+            var typeUid = "37b38fe1-1ca9-40f2-aa20-18ea04ccd3a9";
+            var eqlQuery = "";
+            var limit = "15";
+            var offset = "0";
+            var sort = "";
+            var filterProviderUid = "";
+            var filterProviderData = "";
+            var filter = "";
+            //var str = String.Format(@"http://{8}/API/REST/Entity/Query?type={0}&q={1}&limit={2}&offset={3}&sort={4}&filterProviderUid={5}&filterProviderData={6}&filter={7}",
+                var str = String.Format(@"http://{8}/API/REST/Entity/Query?type={0}&limit={2}&offset={3}",
+            typeUid, eqlQuery, limit, offset, sort, filterProviderUid, filterProviderData, filter, ServerName);
+            HttpWebRequest queryReq = WebRequest.Create(str) as HttpWebRequest;
+            queryReq.Method = "GET";
+            queryReq.Headers.Add("AuthToken", authToken);
+            queryReq.Headers.Add("SessionToken", SessionToken);
+            queryReq.Timeout = 10000;
+            queryReq.ContentType = "application/json; charset=utf-8";
+
+            var res = queryReq.GetResponse() as HttpWebResponse;
+            var resStream = res.GetResponseStream();
+            var sr = new StreamReader(resStream, Encoding.UTF8);
+
+            var s = sr.ReadToEnd();
+            //достаем необходимые данные
+            //Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(s);
+            //DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(object[]));
+            //object objResponse = jsonSerializer.ReadObject(resStream);
+
+            // var dict = new JsonSerializer().Deserialize(sr.ReadToEnd(), typeof(Dictionary<string, string>)) as Dictionary<string, string>;
+            var dict = new JsonSerializer();
+            //var s = "";
+            var dictA = dict.DeserializeObject(s);// as Dictionary<string, string>;
+            var dictB = dictA as object[];
+            if (dictB != null) {
+                foreach (var dictC in dictB) {
+                    var value = dictC as Dictionary<string, object>;
+                    var items = value["Items"];
+                    var params1=items as object[];
+                    foreach (var param in params1)
+                    {
+                        var p1 = param as Dictionary<string, object>;
+                        if (p1.ContainsKey("Name")) {
+                            var Id =long.Parse((string) p1["Value"]); 
+                        }
+
+                        
+                    }
+                        
+                }
+            }
+            Console.ReadKey();
+        }
 
     }
 }
