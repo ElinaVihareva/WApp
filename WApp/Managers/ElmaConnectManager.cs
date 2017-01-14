@@ -16,6 +16,8 @@ using System.Threading.Tasks;
 
 using AutoServer.Common;
 using System.Runtime.Serialization.Json;
+using static WApp.Models.ELMADBModels;
+using WApp.Models;
 
 namespace WApp.Managers
 {
@@ -156,16 +158,31 @@ namespace WApp.Managers
                     var value = dictC as Dictionary<string, object>;
                     var items = value["Items"];
                     var params1=items as object[];
+                    // Создать объект контекста
+                    WorkflowInstance instance = new WorkflowInstance();
                     foreach (var param in params1)
                     {
                         var p1 = param as Dictionary<string, object>;
                         if (p1.ContainsKey("Name")) {
-                            var Id =long.Parse((string) p1["Value"]); 
+                            var name = p1["Value"];
+                            if (name == "Id") {
+                                instance.id = int.Parse((string)p1["Value"]);
+                            }
+
+                            
                         }
+                    
 
                         
                     }
-                        
+                    // Создать объект контекста
+                    ELMADBContext context = new ELMADBContext();
+                    // Вставить данные в таблицу Customers с помощью LINQ
+                    context.WorkflowInstance.Add(instance);
+
+                    // Сохранить изменения в БД
+                    context.SaveChanges();
+
                 }
             }
             Console.ReadKey();

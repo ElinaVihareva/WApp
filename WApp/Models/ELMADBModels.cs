@@ -8,22 +8,25 @@ namespace WApp.Models
 {
     public class ELMADBModels
     {
+        
         public class WorkflowInstance
         {
-            long id;
-            Guid uid;
-            long process;
-            string name;
-            DateTime startDate;
-            DateTime endDate;
-            long status;
-            Guid elementUid;
-            long elmaId;
+            [System.ComponentModel.DataAnnotations.Schema.ForeignKey("id")]
+            public int id { get; set; }
+            public Guid uid;
+            public long process;
+            public string name;
+            public DateTime startDate;
+            public DateTime endDate;
+            public long status;
+            public Guid elementUid;
+            public long elmaId;
         }
 
         public class WorkflowBookmark
         {
-            long id;
+            [System.ComponentModel.DataAnnotations.Schema.ForeignKey("id")]
+            public int id { get; set; }
             Guid uid;
             Guid elementUid;
             long instance;
@@ -32,7 +35,8 @@ namespace WApp.Models
 
         public class TaskBase
         {
-            long id;
+            [System.ComponentModel.DataAnnotations.Schema.ForeignKey("id")]
+            public int id { get; set; }
             long executor;
             string subject;
             DateTime startDate;
@@ -43,7 +47,8 @@ namespace WApp.Models
 
         public class WorkflowTrackingItem 
         {
-            long id;
+            [System.ComponentModel.DataAnnotations.Schema.ForeignKey("id")]
+            public int id { get; set; }
             Guid elementUid;
             DateTime startDate;
             DateTime endDate;
@@ -52,7 +57,8 @@ namespace WApp.Models
 
         public class WorkflowProcess 
         {
-            long id;
+            [System.ComponentModel.DataAnnotations.Schema.ForeignKey("id")]
+            public int id { get; set; }
             string name;
             long header;
             long versionNumber;
@@ -64,7 +70,8 @@ namespace WApp.Models
             string address;
             string login;
             string password;
-            long id;
+            [System.ComponentModel.DataAnnotations.Schema.ForeignKey("id")]
+            public int id { get; set; }
         }
     }
 }
