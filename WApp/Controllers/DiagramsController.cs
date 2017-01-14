@@ -1,10 +1,12 @@
-﻿using System;
+﻿using CodeFirst;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using WApp.Models;
+using static CodeFirst.Model;
 
 namespace WApp.Controllers
 {
@@ -14,16 +16,18 @@ namespace WApp.Controllers
         // GET: Diagrams
         public ActionResult Index()
         {
-            return View();
+            return View("Account/Diagrams");
         }
 
         public ActionResult TheGood()
         {
             SampleContext context = new SampleContext();
             var model = new DiagramsModels();
-            model.process = Data.GetMovie();
-            model.Genres = from genre in Data.GetGenres()
-                           select new SelectListItem { Text = genre.Name, Value = genre.Id.ToString() };
+
+            foreach (ProcessHeader header in context.ProcessHeader)
+            {
+                model.process.Add(header);
+            }
             return View(model);
         }
     }
