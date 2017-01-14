@@ -7,6 +7,6 @@ namespace WApp.Models
 {
     public class DiagramsModels
     {
-        
+        List<ELMADBModels.WorkflowProcess> process;
     }
 }
