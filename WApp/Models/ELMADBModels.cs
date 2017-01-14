@@ -17,6 +17,7 @@ namespace WApp.Models
             DateTime endDate;
             long status;
             Guid elementUid;
+            long elmaId;
         }
 
         public class WorkflowBookmark
@@ -25,6 +26,7 @@ namespace WApp.Models
             Guid uid;
             Guid elementUid;
             long instance;
+            long elmaId;
         }
 
         public class TaskBase
@@ -35,6 +37,7 @@ namespace WApp.Models
             DateTime startDate;
             DateTime endWorkDate;
             long workflowBookmark;
+            long elmaId;
         }
 
         public class WorkflowTrackingItem
@@ -43,6 +46,7 @@ namespace WApp.Models
             Guid elementUid;
             DateTime startDate;
             DateTime endDate;
+            long elmaId;
         }
 
         public class WorkflowProcess
@@ -51,6 +55,7 @@ namespace WApp.Models
             string name;
             long header;
             long versionNumber;
+            long elmaId;
         }     
     }
 }
