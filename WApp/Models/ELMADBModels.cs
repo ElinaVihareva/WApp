@@ -11,7 +11,7 @@ namespace WApp.Models
         
         public class WorkflowInstance
         {
-            [System.ComponentModel.DataAnnotations.Schema.ForeignKey("id")]
+            
             public int id { get; set; }
             public Guid uid;
             public long process;
@@ -25,7 +25,7 @@ namespace WApp.Models
 
         public class WorkflowBookmark
         {
-            [System.ComponentModel.DataAnnotations.Schema.ForeignKey("id")]
+           
             public int id { get; set; }
             Guid uid;
             Guid elementUid;
@@ -35,7 +35,7 @@ namespace WApp.Models
 
         public class TaskBase
         {
-            [System.ComponentModel.DataAnnotations.Schema.ForeignKey("id")]
+  
             public int id { get; set; }
             long executor;
             string subject;
@@ -47,8 +47,8 @@ namespace WApp.Models
 
         public class WorkflowTrackingItem 
         {
-            [System.ComponentModel.DataAnnotations.Schema.ForeignKey("id")]
-            public int id { get; set; }
+           
+            public int Id { get; set; }
             Guid elementUid;
             DateTime startDate;
             DateTime endDate;
@@ -57,8 +57,8 @@ namespace WApp.Models
 
         public class WorkflowProcess 
         {
-            [System.ComponentModel.DataAnnotations.Schema.ForeignKey("id")]
-            public int id { get; set; }
+          
+            public int Id { get; set; }
             string name;
             long header;
             long versionNumber;
@@ -70,8 +70,8 @@ namespace WApp.Models
             string address;
             string login;
             string password;
-            [System.ComponentModel.DataAnnotations.Schema.ForeignKey("id")]
-            public int id { get; set; }
+           
+            public int Id { get; set; }
         }
     }
 }

@@ -5,13 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using static CodeFirst.Model;
+using static CodeFirst.Model.WorkflowInstance;
 
 namespace CodeFirst
 {
-    class SampleContext : DbContext
+    public class SampleContext : DbContext
     {
-       
-            public DbSet<TaskBase> TaskBase { get; set; }
+        public SampleContext()
+            :base("Data Source=n0039;Initial Catalog=HW;User ID=sa;Password=123qwe;")
+        {
+            
+        }
+
+        public DbSet<TaskBase> TaskBase { get; set; }
             public DbSet<WorkflowBookmark> WorkflowBookmark { get; set; }
             public DbSet<WorkflowInstance> WorkflowInstance { get; set; }
             public DbSet<WorkflowProcess> WorkflowProcess { get; set; }
