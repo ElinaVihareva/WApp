@@ -52,8 +52,10 @@ namespace WApp.Managers
             ConnectElma();
             Database.SetInitializer(
        new DropCreateDatabaseIfModelChanges<SampleContext>());
-            AddNewCustomer();
-         //   syncTask();
+            //   AddNewCustomer();
+            syncProcessHeade();
+            syncWorkflowInstance();
+            
 
         }
 
@@ -123,7 +125,7 @@ namespace WApp.Managers
              SessionToken = (string)dictB["SessionToken"];
         }
 
-        private void syncTask() {
+        private void syncProcessHeade() {
             var typeUid = "37b38fe1-1ca9-40f2-aa20-18ea04ccd3a9";
             var eqlQuery = "";
             var limit = "15";
@@ -158,16 +160,15 @@ namespace WApp.Managers
                     var items = value["Items"];
                     var params1=items as object[];
                     // Создать объект контекста
-                    CodeFirst.Model.WorkflowInstance instance = new CodeFirst.Model.WorkflowInstance();
-                    instance.endDate = DateTime.Now;
-                    instance.startDate = DateTime.Now;
+                    CodeFirst.Model.ProcessHeader instance = new CodeFirst.Model.ProcessHeader();
+                    
                     foreach (var param in params1)
                     {
                         var p1 = param as Dictionary<string, object>;
                         if (p1.ContainsKey("Name")) {
                             var name = p1["Name"];
                             if (name.Equals( "Id")) {
-                                instance.Id = int.Parse((string)p1["Value"]);
+                                instance.pId = int.Parse((string)p1["Value"]);
                             }
                         }
                         if (p1.ContainsKey("Name"))
@@ -175,22 +176,24 @@ namespace WApp.Managers
                             var name = p1["Name"];
                             if (name.Equals("Uid"))
                             {
-                                instance.uid =new Guid((string)p1["Value"]);
+                                instance.Uid =new Guid((string)p1["Value"]);
                             }
                         }
+                       
                         if (p1.ContainsKey("Name"))
                         {
                             var name = p1["Name"];
-                            if (name.Equals("Uid"))
+                            if (name.Equals("Name"))
                             {
-                                instance.process = int.Parse((string)p1["Value"]);
+                                instance.Name = ((string)p1["Value"]);
                             }
                         }
+                       
 
                         /*
                       
            
-            public string name { get; set; }
+           
             public DateTime startDate { get; set; }
             public DateTime endDate { get; set; }
             public long status { get; set; }
@@ -204,6 +207,117 @@ namespace WApp.Managers
                     CodeFirst.SampleContext context = new CodeFirst.SampleContext();
                     // Вставить данные в таблицу Customers с помощью LINQ
                     
+                    context.ProcessHeader.Add(instance);
+
+                    // Сохранить изменения в БД
+                    context.SaveChanges();
+
+                }
+            }
+           
+        }
+        private void syncWorkflowInstance()
+        {
+            var typeUid = "37ca54ae-c16f-4100-b25d-760adc1e2bd7";
+            var eqlQuery = "";
+            var limit = "15";
+            var offset = "0";
+            var sort = "";
+            var filterProviderUid = "";
+            var filterProviderData = "";
+            var filter = "";
+            //var str = String.Format(@"http://{8}/API/REST/Entity/Query?type={0}&q={1}&limit={2}&offset={3}&sort={4}&filterProviderUid={5}&filterProviderData={6}&filter={7}",
+            var str = String.Format(@"http://{8}/API/REST/Entity/Query?type={0}&limit={2}&offset={3}",
+        typeUid, eqlQuery, limit, offset, sort, filterProviderUid, filterProviderData, filter, ServerName);
+            HttpWebRequest queryReq = WebRequest.Create(str) as HttpWebRequest;
+            queryReq.Method = "GET";
+            queryReq.Headers.Add("AuthToken", authToken);
+            queryReq.Headers.Add("SessionToken", SessionToken);
+            queryReq.Timeout = 10000;
+            queryReq.ContentType = "application/json; charset=utf-8";
+
+            var res = queryReq.GetResponse() as HttpWebResponse;
+            var resStream = res.GetResponseStream();
+            var sr = new StreamReader(resStream, Encoding.UTF8);
+
+            var s = sr.ReadToEnd();
+
+            var dict = new JsonSerializer();
+            //var s = "";
+            var dictA = dict.DeserializeObject(s);// as Dictionary<string, string>;
+            var dictB = dictA as object[];
+            if (dictB != null)
+            {
+                foreach (var dictC in dictB)
+                {
+                    var value = dictC as Dictionary<string, object>;
+                    var items = value["Items"];
+                    var params1 = items as object[];
+                    // Создать объект контекста
+                    CodeFirst.Model.WorkflowInstance instance = new CodeFirst.Model.WorkflowInstance();
+                    instance.endDate = DateTime.Now;
+                    instance.startDate = DateTime.Now;
+                    foreach (var param in params1)
+                    {
+                        var p1 = param as Dictionary<string, object>;
+                        if (p1.ContainsKey("Name"))
+                        {
+                            var name = p1["Name"];
+                            if (name.Equals("Id"))
+                            {
+                                instance.pId = int.Parse((string)p1["Value"]);
+                            }
+                        }
+                        if (p1.ContainsKey("Name"))
+                        {
+                            var name = p1["Name"];
+                            if (name.Equals("Uid"))
+                            {
+                                instance.uid = new Guid((string)p1["Value"]);
+                            }
+                        }
+                        if (p1.ContainsKey("Name"))
+                        {
+                            var name = p1["Name"];
+                            if (name.Equals("Process"))
+                            {
+                                if(p1["Value"]!=null)instance.process = int.Parse((string)p1["Value"]);
+                            }
+                        }
+                        if (p1.ContainsKey("Name"))
+                        {
+                            var name = p1["Name"];
+                            if (name.Equals("Name"))
+                            {
+                                instance.name = ((string)p1["Value"]);
+                            }
+                        }
+                        if (p1.ContainsKey("Name"))
+                        {
+                            var name = p1["Name"];
+                            if (name.Equals("StartDate"))
+                            {
+                                instance.startDate = DateTime.Parse((string)p1["Value"]);
+                            }
+                        }
+
+                        /*
+                      
+           
+           
+            public DateTime startDate { get; set; }
+            public DateTime endDate { get; set; }
+            public long status { get; set; }
+            public Guid elementUid { get; set; }
+            public long elmaId { get; set; }    
+                     */
+
+
+                    }
+                    // Создать объект контекста
+                    CodeFirst.SampleContext context = new CodeFirst.SampleContext();
+                    // Вставить данные в таблицу Customers с помощью LINQ
+
                     context.WorkflowInstance.Add(instance);
 
                     // Сохранить изменения в БД
@@ -211,7 +325,7 @@ namespace WApp.Managers
 
                 }
             }
-            Console.ReadKey();
+           
         }
         public  void AddNewCustomer()
         {
@@ -233,6 +347,101 @@ namespace WApp.Managers
             context.SaveChanges();
             
         }
+        private void WorkflowTrackingItem()
+        {
+            var typeUid = "bb54f905-dffa-4ae7-a893-3d7f5e358d39";
+            var eqlQuery = "";
+            var limit = "15";
+            var offset = "0";
+            var sort = "";
+            var filterProviderUid = "";
+            var filterProviderData = "";
+            var filter = "";
+            //var str = String.Format(@"http://{8}/API/REST/Entity/Query?type={0}&q={1}&limit={2}&offset={3}&sort={4}&filterProviderUid={5}&filterProviderData={6}&filter={7}",
+            var str = String.Format(@"http://{8}/API/REST/Entity/Query?type={0}&limit={2}&offset={3}",
+        typeUid, eqlQuery, limit, offset, sort, filterProviderUid, filterProviderData, filter, ServerName);
+            HttpWebRequest queryReq = WebRequest.Create(str) as HttpWebRequest;
+            queryReq.Method = "GET";
+            queryReq.Headers.Add("AuthToken", authToken);
+            queryReq.Headers.Add("SessionToken", SessionToken);
+            queryReq.Timeout = 10000;
+            queryReq.ContentType = "application/json; charset=utf-8";
 
+            var res = queryReq.GetResponse() as HttpWebResponse;
+            var resStream = res.GetResponseStream();
+            var sr = new StreamReader(resStream, Encoding.UTF8);
+
+            var s = sr.ReadToEnd();
+
+            var dict = new JsonSerializer();
+            //var s = "";
+            var dictA = dict.DeserializeObject(s);// as Dictionary<string, string>;
+            var dictB = dictA as object[];
+            if (dictB != null)
+            {
+                foreach (var dictC in dictB)
+                {
+                    var value = dictC as Dictionary<string, object>;
+                    var items = value["Items"];
+                    var params1 = items as object[];
+                    // Создать объект контекста
+                    CodeFirst.Model.ProcessHeader instance = new CodeFirst.Model.ProcessHeader();
+
+                    foreach (var param in params1)
+                    {
+                        var p1 = param as Dictionary<string, object>;
+                        if (p1.ContainsKey("Name"))
+                        {
+                            var name = p1["Name"];
+                            if (name.Equals("Id"))
+                            {
+                                instance.pId = int.Parse((string)p1["Value"]);
+                            }
+                        }
+                        if (p1.ContainsKey("Name"))
+                        {
+                            var name = p1["Name"];
+                            if (name.Equals("Uid"))
+                            {
+                                instance.Uid = new Guid((string)p1["Value"]);
+                            }
+                        }
+
+                        if (p1.ContainsKey("Name"))
+                        {
+                            var name = p1["Name"];
+                            if (name.Equals("Name"))
+                            {
+                                instance.Name = ((string)p1["Value"]);
+                            }
+                        }
+
+
+                        /*
+                      
+           
+           
+            public DateTime startDate { get; set; }
+            public DateTime endDate { get; set; }
+            public long status { get; set; }
+            public Guid elementUid { get; set; }
+            public long elmaId { get; set; }    
+                     */
+
+
+                    }
+                    // Создать объект контекста
+                    CodeFirst.SampleContext context = new CodeFirst.SampleContext();
+                    // Вставить данные в таблицу Customers с помощью LINQ
+
+                    context.ProcessHeader.Add(instance);
+
+                    // Сохранить изменения в БД
+                    context.SaveChanges();
+
+                }
+            }
+
+        }
     }
 }
