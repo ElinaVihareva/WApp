@@ -168,7 +168,7 @@ namespace WApp.Managers
                         if (p1.ContainsKey("Name")) {
                             var name = p1["Name"];
                             if (name.Equals( "Id")) {
-                                instance.pId = int.Parse((string)p1["Value"]);
+                             //   instance.pId = int.Parse((string)p1["Value"]);
                             }
                         }
                         if (p1.ContainsKey("Name"))
@@ -176,7 +176,7 @@ namespace WApp.Managers
                             var name = p1["Name"];
                             if (name.Equals("Uid"))
                             {
-                                instance.Uid =new Guid((string)p1["Value"]);
+                               // instance.Uid =new Guid((string)p1["Value"]);
                             }
                         }
                        
@@ -265,7 +265,7 @@ namespace WApp.Managers
                             var name = p1["Name"];
                             if (name.Equals("Id"))
                             {
-                                instance.pId = int.Parse((string)p1["Value"]);
+                             //   instance.pId = int.Parse((string)p1["Value"]);
                             }
                         }
                         if (p1.ContainsKey("Name"))
@@ -395,7 +395,7 @@ namespace WApp.Managers
                             var name = p1["Name"];
                             if (name.Equals("Id"))
                             {
-                                instance.pId = int.Parse((string)p1["Value"]);
+                             //   instance.pId = int.Parse((string)p1["Value"]);
                             }
                         }
                         if (p1.ContainsKey("Name"))
@@ -403,7 +403,7 @@ namespace WApp.Managers
                             var name = p1["Name"];
                             if (name.Equals("Uid"))
                             {
-                                instance.Uid = new Guid((string)p1["Value"]);
+                              //  instance.Uid = new Guid((string)p1["Value"]);
                             }
                         }
 

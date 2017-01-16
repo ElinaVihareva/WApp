@@ -12,7 +12,7 @@
 <h2> <img src="~/Content/WorkflowCharts.png" alt="logo"> </h2>
 
 <h2>@ViewBag.Title.</h2>
-<div id="container" style="height: 400px"></div>
+<div id="container" style="height: 400px;width:1000px"></div>
 <script type="text/javascript">
     $(function () {
 
@@ -60,7 +60,15 @@
 
 
         Highcharts.chart('container', {
-            chart: { type: 'area' },
+            title: {
+                text: "Версия бизнес-процесса 'Согласование договоров'"
+            },
+            chart: {
+                type: 'area',
+                events: {
+                    click: opens
+                }
+            },
             xAxis: {
                 tickLength: 0,
                 labels: { enabled: false}
@@ -88,7 +96,7 @@
         });
     });
 </script>
-<div id="container1" style="height: 400px"></div>
+<div id="container1" style="display:none;height: 400px; width:1000px"></div>
 <script type="text/javascript">
     $(function () {
 
@@ -131,7 +139,15 @@
 
 
         Highcharts.chart('container1', {
-            chart: { type: 'area' },
+            title: {
+                text: "Роли бизнес процесса 'Согласование договоров' Версия 44"
+            },
+            chart: {
+                type: 'area',
+                events: {
+                    click: opens1
+                }
+            },
             xAxis: {
                 tickLength: 0,
                 labels: { enabled: false}
@@ -160,7 +176,7 @@
     });
 </script>
 
-<div id="container2" style="height: 400px"></div>
+<div id="container2" style="display:none;height: 400px; width:1000px"></div>
 <script type="text/javascript">
     $(function () {
 
@@ -202,7 +218,15 @@
 
 
         Highcharts.chart('container2', {
-            chart: { type: 'area' },
+            title: {
+                text: "Роль 'Инициатор'"
+            },
+            chart: {
+                type: 'area',
+                events: {
+                    click: opens2
+                }
+            },
             xAxis: {
                 tickLength: 0,
                 labels: { enabled: false}
@@ -231,7 +255,7 @@
     });
 </script>
 
-<div id="container3" style="height: 400px"></div>
+<div id="container3" style="display:none;height: 400px;  width:1000px"></div>
 <script type="text/javascript">
     $(function () {
 
@@ -274,7 +298,15 @@
 
 
         Highcharts.chart('container3', {
-            chart: { type: 'area' },
+            title:{
+                text:"Задача 'Создание документа'"
+            },
+            chart: {
+                type: 'area',
+                events: {
+                    click:opens
+                }
+            },
             xAxis: {
                 tickLength: 0,
                 labels: { enabled: false}
@@ -301,7 +333,20 @@
             series: makeSeries(rawData)
         });
     });
+
+    function opens() {
+        document.getElementById("container1").style.display = "";
+    }
+    function opens1() {
+        document.getElementById("container2").style.display = "";
+    }
+    function opens3() { }
+    function opens2() {
+        document.getElementById("container3").style.display = "";
+    }
 </script>
+
+
 
 
 
