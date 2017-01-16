@@ -14,7 +14,14 @@ namespace WApp.Models
         public List<ProcessHeader> process { get; set; }
         public List<string> namPprocess { get; set; }
 
-        private List<SelectListItem> _process = new List<SelectListItem>();
+        public ProcessHeader processHeader { get; set; }
+        public List<WorkflowProcess> workflowProcess { get; set; }
+        public List<WorkflowBookmark> workflowBookmark { get; set; }
+        public List<WorkflowInstance> workflowInstance { get; set; }
+        public List<WorkflowTrackingItem> workflowTrackingItem { get; set; }
+        
+
+        /*private List<SelectListItem> _process = new List<SelectListItem>();
 
         [Required(ErrorMessage = "Пожалуйста выберете процесс")]
         public string SelectedProcess { get; set; }
@@ -22,7 +29,8 @@ namespace WApp.Models
         public List<SelectListItem> Process
         {
             get { return _process; }
-        }
+        }*/
+
 
     }
 }
