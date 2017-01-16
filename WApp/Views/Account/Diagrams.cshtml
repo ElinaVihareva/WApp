@@ -14,8 +14,19 @@
 <h2>@ViewBag.Title.</h2>
 <div id="container" style="height: 400px"></div>
 <script type="text/javascript">
-    $(function () {
-
+    function loadElma(instance,callBack) {
+        var data = "data";
+        console.log("s1");
+        var url = "../Elma/SyncElma"
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            type: "POST",
+            data: data,
+            success: callback
+        });
+        console.log("s2");
+        /*
         var rawData = [
     { name: 'Версия 35', x: 10, y: 20 },
     { name: 'Версия 36', x: 13, y: 21 },
@@ -28,7 +39,11 @@
     { name: 'Версия 43', x: 3, y: 19.8 },
     { name: 'Версия 44', x: 12, y: 16.9 }
         ];
+        */
+    }
+    $(function () {
 
+        
         function makeSeries(listOfData) {
             var sumX = 0.0;
             for (var i = 0; i < listOfData.length; i++) {
@@ -61,7 +76,7 @@
 
         Highcharts.chart('container', {
             title:{
-            text:"deee"
+            text:"Версии"
             },
             chart: {
                 type: 'area',
@@ -94,6 +109,8 @@
             },
             series: makeSeries(rawData)
         });
+        
+        loadElma('instance', makeSeries)
     });
     function opens() {
         alert("ok");
