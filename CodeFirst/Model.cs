@@ -16,6 +16,7 @@ namespace CodeFirst
             public int pId { get; set; }
             public Guid uid { get; set; }
             public long process { get; set; }
+            public long header { get; set; }
             public string name { get; set; }
             public DateTime? startDate { get; set; }
             public DateTime? endDate { get; set; }
@@ -86,5 +87,22 @@ namespace CodeFirst
             public string Name { get; set; }
             public Guid Uid { get; set; }
         }
+
+        public class SwimlineInstance
+        {
+            public int Id { get; set; }
+            public int swimlineId { get; set; }
+            public int processId { get; set; }
+            public int instanceId { get; set; }
+
+        }
+        public class Swimline
+        {
+            public int Id { get; set; }
+            public int pId { get; set; }
+            public string Name { get; set; }
+            
+        }
+
     }
 }

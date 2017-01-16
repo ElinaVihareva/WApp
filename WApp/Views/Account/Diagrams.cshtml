@@ -15,323 +15,372 @@
 <div id="container" style="height: 400px;width:1000px"></div>
 <script type="text/javascript">
     $(function () {
-
-        var rawData = [
-    { name: 'Версия 35', x: 10, y: 20 },
-    { name: 'Версия 36', x: 13, y: 21 },
-    { name: 'Версия 37', x: 5, y: 15 },
-    { name: 'Версия 38', x: 9, y: 17.1 },
-    { name: 'Версия 39', x: 11, y: 17 },
-    { name: 'Версия 40', x: 3, y: 17.5 },
-    { name: 'Версия 41', x: 2, y: 17.3 },
-    { name: 'Версия 42', x: 8, y: 20 },
-    { name: 'Версия 43', x: 3, y: 19.8 },
-    { name: 'Версия 44', x: 12, y: 16.9 }
-        ];
-
-        function makeSeries(listOfData) {
-            var sumX = 0.0;
-            for (var i = 0; i < listOfData.length; i++) {
-                sumX += listOfData[i].x;
-            }
-            var gap = sumX / rawData.length * 0.0;
-            var allSeries = []
-            var x = 0.0;
-            for (var i = 0; i < listOfData.length; i++) {
-                var data = listOfData[i];
-                allSeries[i] = {
-                    name: data.name,
-                    data: [
-                        [x, 0], [x, data.y],
-                        {
-                            x: x + data.x / 2.0,
-                            y: data.y,
-                            dataLabels: { enabled: false, format: data.y + ' часов,<br> {x} экземпляров' }
-                        },
-                        [x + data.x, data.y], [x + data.x, 0]
-                    ],
-                    w: data.x,
-                    h: data.y
-                };
-                x += data.x + gap+3;
-            }
-            return allSeries;
-        }
-
-
-        Highcharts.chart('container', {
-            title: {
-                text: "Версия бизнес-процесса 'Согласование договоров'"
-            },
-            chart: {
-                type: 'area',
-                events: {
-                    click: opens
-                }
-            },
-            xAxis: {
-                tickLength: 0,
-                labels: { enabled: false}
-            },
-            yAxis: {
-                title: { enabled: false}
-            },
-            plotOptions: {
-                area: {
-                    marker: {
-                        enabled: false,
-                        states: {
-                            hover: { enabled: false }
+        function syncElma() {
+            var data = "data";
+            console.log("s1");
+            var url = "../Elma/Process"
+            $.ajax({
+                url: url,
+                dataType: 'json',
+                type: "POST",
+                data: data,
+                success: function (rawData) {
+                    function makeSeries(listOfData) {
+                        var sumX = 0.0;
+                        for (var i = 0; i < listOfData.length; i++) {
+                            sumX += listOfData[i].x;
                         }
+                        var gap = sumX / rawData.length * 0.0;
+                        var allSeries = []
+                        var x = 0.0;
+                        for (var i = 0; i < listOfData.length; i++) {
+                            var data = listOfData[i];
+                            allSeries[i] = {
+                                name: data.name,
+                                data: [
+                                    [x, 0], [x, data.y],
+                                    {
+                                        x: x + data.x / 2.0,
+                                        y: data.y,
+                                        dataLabels: { enabled: false, format: data.y + ' часов,<br> {x} экземпляров' }
+                                    },
+                                    [x + data.x, data.y], [x + data.x, 0]
+                                ],
+                                w: data.x,
+                                h: data.y
+                            };
+                            x += data.x + gap + 3;
+                        }
+                        return allSeries;
                     }
+
+
+                    Highcharts.chart('container', {
+                        title: {
+                            text: "Версия бизнес-процесса 'Согласование договоров'"
+                        },
+                        chart: {
+                            type: 'area',
+                            events: {
+                                click: opens
+                            }
+                        },
+                        xAxis: {
+                            tickLength: 0,
+                            labels: { enabled: false }
+                        },
+                        yAxis: {
+                            title: { enabled: false }
+                        },
+                        plotOptions: {
+                            area: {
+                                marker: {
+                                    enabled: false,
+                                    states: {
+                                        hover: { enabled: false }
+                                    }
+                                }
+                            }
+                        },
+                        tooltip: {
+                            followPointer: true,
+                            useHTML: true,
+                            headerFormat: '<span style="color: {series.color}">{series.name}</span>: ',
+                            pointFormat: '<span>{series.options.w} x {series.options.h}</span>'
+                        },
+                        series: makeSeries(rawData)
+                    });
                 }
-            },
-            tooltip: {
-                followPointer: true,
-                useHTML: true,
-                headerFormat: '<span style="color: {series.color}">{series.name}</span>: ',
-                pointFormat: '<span>{series.options.w} x {series.options.h}</span>'
-            },
-            series: makeSeries(rawData)
-        });
+            });
+            console.log("s2");
+
+        }
+        
+
+
     });
 </script>
 <div id="container1" style="display:none;height: 400px; width:1000px"></div>
 <script type="text/javascript">
     $(function () {
-
-        var rawData = [
+        function syncElma() {
+            var data = "data";
+            console.log("s1");
+            var url = "../Elma/instance"
+            $.ajax({
+                url: url,
+                dataType: 'json',
+                type: "POST",
+                data: data,
+                success: function (rawData) {
+                   /* var rawData = [
     { name: 'Инициатор', x: 8, y: 8.2 },
     { name: 'Руководитель', x: 5.6, y: 20.7 },
-    { name: 'Согласующий', x: 3.4, y: 10.2},
+    { name: 'Согласующий', x: 3.4, y: 10.2 },
     { name: 'Технолог', x: 2, y: 6.7 },
-    { name: 'Секретарь', x: 1, y: 3.6 }
-        ];
+    { name: 'Секретарь', x: 1, y: 3.6 }];*/
+                    
 
-        function makeSeries(listOfData) {
-            var sumX = 0.0;
-            for (var i = 0; i < listOfData.length; i++) {
-                sumX += listOfData[i].x;
-            }
-            var gap = sumX / rawData.length * 0.0;
-            var allSeries = []
-            var x = 0.0;
-            for (var i = 0; i < listOfData.length; i++) {
-                var data = listOfData[i];
-                allSeries[i] = {
-                    name: data.name,
-                    data: [
-                        [x, 0], [x, data.y],
-                        {
-                            x: x + data.x / 2.0,
-                            y: data.y,
-                            dataLabels: { enabled: false, format: data.y + ' часов,<br> {x} экземпляров' }
-                        },
-                        [x + data.x, data.y], [x + data.x, 0]
-                    ],
-                    w: data.x,
-                    h: data.y
-                };
-                x += data.x + gap+3;
-            }
-            return allSeries;
-        }
-
-
-        Highcharts.chart('container1', {
-            title: {
-                text: "Роли бизнес процесса 'Согласование договоров' Версия 44"
-            },
-            chart: {
-                type: 'area',
-                events: {
-                    click: opens1
-                }
-            },
-            xAxis: {
-                tickLength: 0,
-                labels: { enabled: false}
-            },
-            yAxis: {
-                title: { enabled: false}
-            },
-            plotOptions: {
-                area: {
-                    marker: {
-                        enabled: false,
-                        states: {
-                            hover: { enabled: false }
+                    function makeSeries(listOfData) {
+                        var sumX = 0.0;
+                        for (var i = 0; i < listOfData.length; i++) {
+                            sumX += listOfData[i].x;
                         }
+                        var gap = sumX / rawData.length * 0.0;
+                        var allSeries = []
+                        var x = 0.0;
+                        for (var i = 0; i < listOfData.length; i++) {
+                            var data = listOfData[i];
+                            allSeries[i] = {
+                                name: data.name,
+                                data: [
+                                    [x, 0], [x, data.y],
+                                    {
+                                        x: x + data.x / 2.0,
+                                        y: data.y,
+                                        dataLabels: { enabled: false, format: data.y + ' часов,<br> {x} экземпляров' }
+                                    },
+                                    [x + data.x, data.y], [x + data.x, 0]
+                                ],
+                                w: data.x,
+                                h: data.y
+                            };
+                            x += data.x + gap + 3;
+                        }
+                        return allSeries;
                     }
+
+
+                    Highcharts.chart('container1', {
+                        title: {
+                            text: "Роли бизнес процесса 'Согласование договоров' Версия 44"
+                        },
+                        chart: {
+                            type: 'area',
+                            events: {
+                                click: opens1
+                            }
+                        },
+                        xAxis: {
+                            tickLength: 0,
+                            labels: { enabled: false }
+                        },
+                        yAxis: {
+                            title: { enabled: false }
+                        },
+                        plotOptions: {
+                            area: {
+                                marker: {
+                                    enabled: false,
+                                    states: {
+                                        hover: { enabled: false }
+                                    }
+                                }
+                            }
+                        },
+                        tooltip: {
+                            followPointer: true,
+                            useHTML: true,
+                            headerFormat: '<span style="color: {series.color}">{series.name}</span>: ',
+                            pointFormat: '<span>{series.options.w} x {series.options.h}</span>'
+                        },
+                        series: makeSeries(rawData)
+                    });
                 }
-            },
-            tooltip: {
-                followPointer: true,
-                useHTML: true,
-                headerFormat: '<span style="color: {series.color}">{series.name}</span>: ',
-                pointFormat: '<span>{series.options.w} x {series.options.h}</span>'
-            },
-            series: makeSeries(rawData)
-        });
+            });
+            console.log("s2");
+
+        }
+        
     });
 </script>
 
 <div id="container2" style="display:none;height: 400px; width:1000px"></div>
 <script type="text/javascript">
     $(function () {
-
-        var rawData = [
+        function syncElma() {
+            var data = "data";
+            console.log("s1");
+            var url = "../Elma/swimline"
+            $.ajax({
+                url: url,
+                dataType: 'json',
+                type: "POST",
+                data: data,
+                success: function (rawData) {
+                    /*var rawData = [
     { name: 'Создание документа', x: 1, y: 2.6 },
     { name: 'Отправка на согласование', x: 1, y: 0.1 },
-    { name: 'Доработка документа', x: 5, y: 15.4},
+    { name: 'Доработка документа', x: 5, y: 15.4 },
     { name: 'Контроль получения оригинала', x: 1, y: 0.5 }
-        ];
-
-        function makeSeries(listOfData) {
-            var sumX = 0.0;
-            for (var i = 0; i < listOfData.length; i++) {
-                sumX += listOfData[i].x;
-            }
-            var gap = sumX / rawData.length * 0.0;
-            var allSeries = []
-            var x = 0.0;
-            for (var i = 0; i < listOfData.length; i++) {
-                var data = listOfData[i];
-                allSeries[i] = {
-                    name: data.name,
-                    data: [
-                        [x, 0], [x, data.y],
-                        {
-                            x: x + data.x / 2.0,
-                            y: data.y,
-                            dataLabels: { enabled: false, format: data.y + ' часов,<br> {x} экземпляров' }
-                        },
-                        [x + data.x, data.y], [x + data.x, 0]
-                    ],
-                    w: data.x,
-                    h: data.y
-                };
-                x += data.x + gap+3;
-            }
-            return allSeries;
-        }
-
-
-        Highcharts.chart('container2', {
-            title: {
-                text: "Роль 'Инициатор'"
-            },
-            chart: {
-                type: 'area',
-                events: {
-                    click: opens2
-                }
-            },
-            xAxis: {
-                tickLength: 0,
-                labels: { enabled: false}
-            },
-            yAxis: {
-                title: { enabled: false}
-            },
-            plotOptions: {
-                area: {
-                    marker: {
-                        enabled: false,
-                        states: {
-                            hover: { enabled: false }
+                    ];
+                    */
+                    function makeSeries(listOfData) {
+                        var sumX = 0.0;
+                        for (var i = 0; i < listOfData.length; i++) {
+                            sumX += listOfData[i].x;
                         }
+                        var gap = sumX / rawData.length * 0.0;
+                        var allSeries = []
+                        var x = 0.0;
+                        for (var i = 0; i < listOfData.length; i++) {
+                            var data = listOfData[i];
+                            allSeries[i] = {
+                                name: data.name,
+                                data: [
+                                    [x, 0], [x, data.y],
+                                    {
+                                        x: x + data.x / 2.0,
+                                        y: data.y,
+                                        dataLabels: { enabled: false, format: data.y + ' часов,<br> {x} экземпляров' }
+                                    },
+                                    [x + data.x, data.y], [x + data.x, 0]
+                                ],
+                                w: data.x,
+                                h: data.y
+                            };
+                            x += data.x + gap + 3;
+                        }
+                        return allSeries;
                     }
+
+
+                    Highcharts.chart('container2', {
+                        title: {
+                            text: "Роль 'Инициатор'"
+                        },
+                        chart: {
+                            type: 'area',
+                            events: {
+                                click: opens2
+                            }
+                        },
+                        xAxis: {
+                            tickLength: 0,
+                            labels: { enabled: false }
+                        },
+                        yAxis: {
+                            title: { enabled: false }
+                        },
+                        plotOptions: {
+                            area: {
+                                marker: {
+                                    enabled: false,
+                                    states: {
+                                        hover: { enabled: false }
+                                    }
+                                }
+                            }
+                        },
+                        tooltip: {
+                            followPointer: true,
+                            useHTML: true,
+                            headerFormat: '<span style="color: {series.color}">{series.name}</span>: ',
+                            pointFormat: '<span>{series.options.w} x {series.options.h}</span>'
+                        },
+                        series: makeSeries(rawData)
+                    });
                 }
-            },
-            tooltip: {
-                followPointer: true,
-                useHTML: true,
-                headerFormat: '<span style="color: {series.color}">{series.name}</span>: ',
-                pointFormat: '<span>{series.options.w} x {series.options.h}</span>'
-            },
-            series: makeSeries(rawData)
-        });
+            });
+            console.log("s2");
+
+        }
+        
     });
 </script>
 
 <div id="container3" style="display:none;height: 400px;  width:1000px"></div>
 <script type="text/javascript">
     $(function () {
-
-        var rawData = [
-    { name: 'Сатирская Н.А.', x: 3, y: 3.5},
+        function syncElma() {
+            var data = "data";
+            console.log("s1");
+            var url = "../Elma/Task"
+            $.ajax({
+                url: url,
+                dataType: 'json',
+                type: "POST",
+                data: data,
+                success: function (rawData) {
+                    /*var rawData = [
+    { name: 'Сатирская Н.А.', x: 3, y: 3.5 },
     { name: 'Сайтерлы Р.Г.', x: 4, y: 2.8 },
-    { name: 'Миразутдинов М.О.', x: 5, y: 2.4},
+    { name: 'Миразутдинов М.О.', x: 5, y: 2.4 },
     { name: 'Эмануилов А.А.', x: 4, y: 2.9 },
-    { name: 'Искандеров И.А.', x: 6, y:3.1 }
-        ];
-
-        function makeSeries(listOfData) {
-            var sumX = 0.0;
-            for (var i = 0; i < listOfData.length; i++) {
-                sumX += listOfData[i].x;
-            }
-            var gap = sumX / rawData.length * 0.0;
-            var allSeries = []
-            var x = 0.0;
-            for (var i = 0; i < listOfData.length; i++) {
-                var data = listOfData[i];
-                allSeries[i] = {
-                    name: data.name,
-                    data: [
-                        [x, 0], [x, data.y],
-                        {
-                            x: x + data.x / 2.0,
-                            y: data.y,
-                            dataLabels: { enabled: false, format: data.y + ' часов,<br> {x} экземпляров' }
-                        },
-                        [x + data.x, data.y], [x + data.x, 0]
-                    ],
-                    w: data.x,
-                    h: data.y
-                };
-                x += data.x + gap+3;
-            }
-            return allSeries;
-        }
-
-
-        Highcharts.chart('container3', {
-            title:{
-                text:"Задача 'Создание документа'"
-            },
-            chart: {
-                type: 'area',
-                events: {
-                    click:opens
-                }
-            },
-            xAxis: {
-                tickLength: 0,
-                labels: { enabled: false}
-            },
-            yAxis: {
-                title: { enabled: false}
-            },
-            plotOptions: {
-                area: {
-                    marker: {
-                        enabled: false,
-                        states: {
-                            hover: { enabled: false }
+    { name: 'Искандеров И.А.', x: 6, y: 3.1 }
+                    ];
+                    */
+                    function makeSeries(listOfData) {
+                        var sumX = 0.0;
+                        for (var i = 0; i < listOfData.length; i++) {
+                            sumX += listOfData[i].x;
                         }
+                        var gap = sumX / rawData.length * 0.0;
+                        var allSeries = []
+                        var x = 0.0;
+                        for (var i = 0; i < listOfData.length; i++) {
+                            var data = listOfData[i];
+                            allSeries[i] = {
+                                name: data.name,
+                                data: [
+                                    [x, 0], [x, data.y],
+                                    {
+                                        x: x + data.x / 2.0,
+                                        y: data.y,
+                                        dataLabels: { enabled: false, format: data.y + ' часов,<br> {x} экземпляров' }
+                                    },
+                                    [x + data.x, data.y], [x + data.x, 0]
+                                ],
+                                w: data.x,
+                                h: data.y
+                            };
+                            x += data.x + gap + 3;
+                        }
+                        return allSeries;
                     }
+
+
+                    Highcharts.chart('container3', {
+                        title: {
+                            text: "Задача 'Создание документа'"
+                        },
+                        chart: {
+                            type: 'area',
+                            events: {
+                                click: opens
+                            }
+                        },
+                        xAxis: {
+                            tickLength: 0,
+                            labels: { enabled: false }
+                        },
+                        yAxis: {
+                            title: { enabled: false }
+                        },
+                        plotOptions: {
+                            area: {
+                                marker: {
+                                    enabled: false,
+                                    states: {
+                                        hover: { enabled: false }
+                                    }
+                                }
+                            }
+                        },
+                        tooltip: {
+                            followPointer: true,
+                            useHTML: true,
+                            headerFormat: '<span style="color: {series.color}">{series.name}</span>: ',
+                            pointFormat: '<span>{series.options.w} x {series.options.h}</span>'
+                        },
+                        series: makeSeries(rawData)
+                    });
                 }
-            },
-            tooltip: {
-                followPointer: true,
-                useHTML: true,
-                headerFormat: '<span style="color: {series.color}">{series.name}</span>: ',
-                pointFormat: '<span>{series.options.w} x {series.options.h}</span>'
-            },
-            series: makeSeries(rawData)
-        });
+            });
+            console.log("s2");
+
+        }
+        
     });
 
     function opens() {
