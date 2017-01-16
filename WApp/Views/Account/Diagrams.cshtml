@@ -1,4 +1,4 @@
-﻿@model WApp.Models.DiagramsModels;
+﻿@model WApp.Models.DiagramsModels
 
 @{
     ViewBag.Title = "Аналитика";
@@ -56,7 +56,15 @@
 
 
         Highcharts.chart('container', {
-            chart: { type: 'area' },
+            title:{
+            text:"deee"
+            },
+            chart: {
+                type: 'area',
+                events: {
+                    click:opens
+                }
+            },
             xAxis: {
                 tickLength: 0,
                 labels: { enabled: false}
@@ -83,6 +91,9 @@
             series: makeSeries(rawData)
         });
     });
+    function opens() {
+        alert("ok");
+    }
 </script>
 
 <text>Select a category: </text> 
